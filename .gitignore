@@ -3,3 +3,5 @@
 # reports and results
 /playwright-report
 /test-results
+
+**/.features-gen/**/*.spec.js
