@@ -10,6 +10,15 @@ export @Fixture('homePage') class HomePage{
 
     @Given('I go to homepage {string}')
     async goToHomePage(url: string){
+        await this.page.route('**/*', (route) => {
+            url = route.request().url();
+            if (url.includes('ads') || url.includes('doubleclick') || url.includes('googlesyndication')) {
+                route.abort();
+            } else {
+                route.continue();
+            }
+        });
+
         await this.page.goto(url);
     }
 
