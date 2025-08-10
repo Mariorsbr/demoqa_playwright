@@ -9,6 +9,7 @@ export @Fixture('homePage') class HomePage{
     readonly widgetsHeader: Locator
     readonly interactionsHeader: Locator
     readonly bookStoreApplicationHeader: Locator
+    readonly messageAfterClickHeader: Locator
 
     constructor(page: Page){
         this.page = page       
@@ -18,20 +19,21 @@ export @Fixture('homePage') class HomePage{
         this.widgetsHeader = this.page.locator("h5",{hasText: "Widgets"})
         this.interactionsHeader = this.page.locator("h5",{hasText: "Interactions"})
         this.bookStoreApplicationHeader = this.page.locator("h5",{hasText: "Book Store Application"})
+        this.messageAfterClickHeader = this.page.locator('[id="Ad.Plus-970x250-1"]', {hasText: "Please select an item from left to start practice."})
     }
 
-    @Given('I go to homepage {string}')
-    async goToHomePage(url: string){
+    @Given('I go to homepage')
+    async goToHomePage(){
         await this.page.route('**/*', (route) => {
-            url = route.request().url();
-            if (url.includes('ads') || url.includes('doubleclick') || url.includes('googlesyndication')) {
+            const requestUrl = route.request().url();
+            if (requestUrl.includes('ads') || requestUrl.includes('doubleclick') || requestUrl.includes('googlesyndication')) {
                 route.abort();
             } else {
                 route.continue();
             }
         });
 
-        await this.page.goto(url);
+        await this.page.goto("https://demoqa.com");
     }
 
     @When('I click on Elements Header')
@@ -62,5 +64,10 @@ export @Fixture('homePage') class HomePage{
     @When('I click on Elements')
     async clickOnBookStoreApplicationHeader(){
         await this.bookStoreApplicationHeader.click()
+    }
+
+    @Then('I check if the text message is correct after click header')
+    async checkMessageAfterClickHeader(){
+        await expect(this.messageAfterClickHeader).toBeVisible
     }
 }    
