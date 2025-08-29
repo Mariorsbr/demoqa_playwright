@@ -46,7 +46,7 @@ export @Fixture('homePage') class HomePage{
         await this.formsHeader.click()
     }
 
-    @When('I click on Alert Frame Windows')
+    @When('I click on Alerts, Frame & Windows Header')
     async clickOnAlertFrameWindows(){
         await this.alertFramesWindowsHeader.click()
     }
